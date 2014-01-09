@@ -12,5 +12,8 @@
     "url": "https://github.com/vesln/socialcount"
   },
   "author": "Veselin Todorov <hi@vesln.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "request": "~2.31.0"
+  }
 }
