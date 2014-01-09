@@ -1,0 +1,16 @@
+{
+  "name": "socialcount",
+  "version": "0.0.0",
+  "description": "Get the social count for given url",
+  "main": "index.js",
+  "homepage": "https://github.com/vesln/socialcount",
+  "scripts": {
+    "test": "hydro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vesln/socialcount"
+  },
+  "author": "Veselin Todorov <hi@vesln.com>",
+  "license": "MIT"
+}
