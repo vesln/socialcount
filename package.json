@@ -1,6 +1,6 @@
 {
   "name": "socialcount",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Get social stats for given url ",
   "main": "index.js",
   "homepage": "https://github.com/vesln/socialcount",
