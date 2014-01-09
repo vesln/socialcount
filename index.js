@@ -124,12 +124,14 @@ function social(url, opts, fn) {
     return fn(null, ret);
   }
 
+  function done(err) {
+    if (err) error = err;
+    if (--total === 0) fn(error, ret);
+  }
+
   sources.forEach(function(source) {
     source.fetcher(url, function(err, count) {
-      --total;
-      if (err) {
-        return (error = err);
-      }
+      if (err) return done(err);
 
       if (Object(count) === count) {
         ret[source.key] = count;
@@ -137,9 +139,7 @@ function social(url, opts, fn) {
         ret[source.key].count = count;
       }
 
-      if (total === 0) {
-        fn(error, ret);
-      }
+      done();
     });
   });
 }
