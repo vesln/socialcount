@@ -44,7 +44,7 @@ function plus(url, fn) {
   request.get(URLS.plus.replace('{url}', url), function(err, res) {
     if (err) return fn(err);
     var match = (/window.__SSR = {c: (\d*).0 ,/).exec(res.body);
-    if (!match[0]) return fn(null, 0);
+    if (!match || !match[0]) return fn(null, 0);
     fn(null, +match[1]);
   });
 }
