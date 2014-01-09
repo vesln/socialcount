@@ -73,15 +73,21 @@ function plus(url, fn) {
  * @param {String} url
  * @param {Function} callback
  * @cb {Error} error
- * @cb {Number} count
+ * @cb {Object} counts
  * @api private
  */
 
 function facebook(url, fn) {
   get(URLS.facebook, url, function(err, res) {
     if (err) return fn(err);
-    var obj = Array.isArray(res.body) ? res.body[0] : {};
-    fn(null, obj.total_count || 0);
+    var stats = res.body[0] || {};
+    var ret = {};
+    ret.count = stats.total_count;
+    ret.shareCount = stats.share_count;
+    ret.likeCount = stats.like_count;
+    ret.commentCount = stats.comment_count;
+    ret.clickCount = stats.click_count;
+    fn(null, ret);
   });
 }
 
@@ -121,9 +127,19 @@ function social(url, opts, fn) {
   sources.forEach(function(source) {
     source.fetcher(url, function(err, count) {
       --total;
-      if (err) return (error = err);
-      ret[source.key].count = count;
-      if (total === 0) fn(error, ret);
+      if (err) {
+        return (error = err);
+      }
+
+      if (Object(count) === count) {
+        ret[source.key] = count;
+      } else {
+        ret[source.key].count = count;
+      }
+
+      if (total === 0) {
+        fn(error, ret);
+      }
     });
   });
 }
