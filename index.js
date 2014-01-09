@@ -54,7 +54,8 @@ function plus(url, fn) {
  *
  * Options:
  *
- * - tweets {Boolean} fetch tweets
+ * - tweets {Boolean} fetch tweet count (default: false)
+ * - plus   {Boolean} fetch Google +1 count (default: false)
  *
  * @param {String} url
  * @param {Object} options
