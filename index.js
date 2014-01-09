@@ -15,6 +15,21 @@ var URLS = {
 };
 
 /**
+ * Replace a URL placeholder in `base` and perform an HTTP GET request.
+ *
+ * @param {String} base url
+ * @param {String} url
+ * @param {Function} fn
+ * @cb {Error} error
+ * @cb {Response} HTTP response
+ * @api private
+ */
+
+function get(base, url, fn) {
+  request.get(base.replace('{url}', url), { json: true }, fn);
+}
+
+/**
  * Get the tweet count for `url`.
  *
  * @param {String} url
@@ -25,7 +40,7 @@ var URLS = {
  */
 
 function tweets(url, fn) {
-  request.get(URLS.tweets.replace('{url}', url), { json: true }, function(err, res) {
+  get(URLS.tweets, url, function(err, res) {
     if (err) return fn(err);
     fn(null, res.body.count);
   });
@@ -42,7 +57,7 @@ function tweets(url, fn) {
  */
 
 function plus(url, fn) {
-  request.get(URLS.plus.replace('{url}', url), function(err, res) {
+  get(URLS.plus, url, function(err, res) {
     if (err) return fn(err);
     var match = (/window.__SSR = {c: (\d*).0 ,/).exec(res.body);
     if (!match || !match[0]) return fn(null, 0);
@@ -63,7 +78,7 @@ function plus(url, fn) {
  */
 
 function facebook(url, fn) {
-  request.get(URLS.facebook.replace('{url}', url), { json: true }, function(err, res) {
+  get(URLS.facebook, url, function(err, res) {
     if (err) return fn(err);
     var obj = Array.isArray(res.body) ? res.body[0] : {};
     fn(null, obj.total_count || 0);
@@ -75,8 +90,9 @@ function facebook(url, fn) {
  *
  * Options:
  *
- * - tweets {Boolean} fetch tweet count (default: false)
- * - plus   {Boolean} fetch Google +1 count (default: false)
+ * - tweets   {Boolean} fetch tweet count
+ * - plus     {Boolean} fetch Google +1 count
+ * - facebook {Boolean} fetch Facebook counts
  *
  * @param {String} url
  * @param {Object} options
