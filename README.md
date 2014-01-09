@@ -6,7 +6,7 @@ version](https://badge.fury.io/js/socialcount.png)](http://badge.fury.io/js/soci
 
 ## Synopsis
 
-Get the social count for given URL.
+Get social stats for given url
 
 ## Supported sources:
 
