@@ -4,11 +4,9 @@ version](https://badge.fury.io/js/socialcount.png)](http://badge.fury.io/js/soci
 
 # socialcount
 
-Get the social count for given URL.
-
 ## Synopsis
 
-Teeny-weeny test runner for Node.js
+Get the social count for given URL.
 
 ## Supported sources:
 
