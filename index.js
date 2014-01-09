@@ -106,10 +106,10 @@ function social(url, opts, fn) {
   var sources = [];
   var error = null;
   var total = 0;
-  var ret = {};
+  var ret = { facebook: {}, tweet: {}, plus: {} };
 
   if (opts.facebook) sources.push({ fetcher: facebook, key: 'facebook' });
-  if (opts.tweets) sources.push({ fetcher: tweets, key: 'tweets' });
+  if (opts.tweets) sources.push({ fetcher: tweets, key: 'tweet' });
   if (opts.plus) sources.push({ fetcher: plus, key: 'plus' });
 
   total = sources.length;
@@ -120,9 +120,10 @@ function social(url, opts, fn) {
 
   sources.forEach(function(source) {
     source.fetcher(url, function(err, count) {
+      --total;
       if (err) return (error = err);
-      ret[source.key] = count;
-      if (--total === 0) return fn(error, ret);
+      ret[source.key].count = count;
+      if (total === 0) fn(error, ret);
     });
   });
 }
