@@ -9,7 +9,8 @@ var request = require('request');
  */
 
 var URLS = {
-  tweets: 'http://urls.api.twitter.com/1/urls/count.json?url={url}'
+  tweets: 'http://urls.api.twitter.com/1/urls/count.json?url={url}',
+  plus: 'https://plusone.google.com/u/0/_/+1/fastbutton?url={url}',
 };
 
 /**
@@ -30,6 +31,25 @@ function tweets(url, fn) {
 }
 
 /**
+ * Get the +1 count for `url`.
+ *
+ * @param {String} url
+ * @param {Function} callback
+ * @cb {Error} error
+ * @cb {Number} count
+ * @api private
+ */
+
+function plus(url, fn) {
+  request.get(URLS.plus.replace('{url}', url), function(err, res) {
+    if (err) return fn(err);
+    var match = (/window.__SSR = {c: (\d*).0 ,/).exec(res.body);
+    if (!match[0]) return fn(null, 0);
+    fn(null, +match[1]);
+  });
+}
+
+/**
  * Get the social count for `url`.
  *
  * Options:
@@ -45,10 +65,19 @@ function tweets(url, fn) {
  */
 
 function social(url, opts, fn) {
-  tweets(url, function(err, count) {
-    if (err) return fn(err);
-    fn(null, { tweets: count });
-  });
+  if (opts.tweets) {
+    tweets(url, function(err, count) {
+      if (err) return fn(err);
+      fn(null, { tweets: count });
+    });
+  }
+
+  if (opts.plus) {
+    plus(url, function(err, count) {
+      if (err) return fn(err);
+      fn(null, { plus: count });
+    });
+  }
 }
 
 /**

@@ -17,3 +17,11 @@ test('get tweet count for url with no tweets', function(done) {
     done();
   });
 });
+
+test('get google plus count', function(done) {
+  social(url, { plus: true }, function(err, res) {
+    assert(!err, 'unexpected error');
+    assert(res.plus > 0, 'zero +1 count');
+    done();
+  });
+});

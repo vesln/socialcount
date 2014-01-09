@@ -9,6 +9,7 @@ module.exports = function(hydro) {
   hydro.set({
     suite: 'socialcount',
     formatter: 'hydro-dot',
+    timeout: 5000,
     globals: {
       assert: require('assert')
     },
