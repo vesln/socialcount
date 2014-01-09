@@ -87,26 +87,28 @@ function facebook(url, fn) {
  */
 
 function social(url, opts, fn) {
-  if (opts.tweets) {
-    tweets(url, function(err, count) {
-      if (err) return fn(err);
-      fn(null, { tweets: count });
-    });
+  var sources = [];
+  var error = null;
+  var total = 0;
+  var ret = {};
+
+  if (opts.facebook) sources.push({ fetcher: facebook, key: 'facebook' });
+  if (opts.tweets) sources.push({ fetcher: tweets, key: 'tweets' });
+  if (opts.plus) sources.push({ fetcher: plus, key: 'plus' });
+
+  total = sources.length;
+
+  if (!total) {
+    return fn(null, ret);
   }
 
-  if (opts.plus) {
-    plus(url, function(err, count) {
-      if (err) return fn(err);
-      fn(null, { plus: count });
+  sources.forEach(function(source) {
+    source.fetcher(url, function(err, count) {
+      if (err) return (error = err);
+      ret[source.key] = count;
+      if (--total === 0) return fn(error, ret);
     });
-  }
-
-  if (opts.facebook) {
-    facebook(url, function(err, count) {
-      if (err) return fn(err);
-      fn(null, { plus: count });
-    });
-  }
+  });
 }
 
 /**
