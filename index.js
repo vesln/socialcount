@@ -68,8 +68,6 @@ function plus(url, fn) {
 /**
  * Get the Facebook shares + likes count for `url`.
  *
- * TODO: add support for more than `total_count`.
- *
  * @param {String} url
  * @param {Function} callback
  * @cb {Error} error
