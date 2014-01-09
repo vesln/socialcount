@@ -15,5 +15,11 @@
   "license": "MIT",
   "dependencies": {
     "request": "~2.31.0"
+  },
+  "devDependencies": {
+    "hydro": "~0.8.7",
+    "hydro-dot": "~1.0.5",
+    "hydro-clean-stacks": "~0.2.0",
+    "hydro-tdd": "0.0.1"
   }
 }
