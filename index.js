@@ -11,6 +11,7 @@ var request = require('request');
 var URLS = {
   tweets: 'http://urls.api.twitter.com/1/urls/count.json?url={url}',
   plus: 'https://plusone.google.com/u/0/_/+1/fastbutton?url={url}',
+  facebook: 'http://api.facebook.com/restserver.php?method=links.getStats&format=json&urls={url}'
 };
 
 /**
@@ -50,6 +51,26 @@ function plus(url, fn) {
 }
 
 /**
+ * Get the Facebook shares + likes count for `url`.
+ *
+ * TODO: add support for more than `total_count`.
+ *
+ * @param {String} url
+ * @param {Function} callback
+ * @cb {Error} error
+ * @cb {Number} count
+ * @api private
+ */
+
+function facebook(url, fn) {
+  request.get(URLS.facebook.replace('{url}', url), { json: true }, function(err, res) {
+    if (err) return fn(err);
+    var obj = Array.isArray(res.body) ? res.body[0] : {};
+    fn(null, obj.total_count || 0);
+  });
+}
+
+/**
  * Get the social count for `url`.
  *
  * Options:
@@ -75,6 +96,13 @@ function social(url, opts, fn) {
 
   if (opts.plus) {
     plus(url, function(err, count) {
+      if (err) return fn(err);
+      fn(null, { plus: count });
+    });
+  }
+
+  if (opts.facebook) {
+    facebook(url, function(err, count) {
       if (err) return fn(err);
       fn(null, { plus: count });
     });
