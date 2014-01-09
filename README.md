@@ -48,6 +48,10 @@ social('http://awesome.io', opts, function(err, res) {
 $ npm install socialcount
 ```
 
+### Notes for 0.11 users
+
+The Google+ counts won't work due to SSL bug.
+
 ## License
 
 The MIT License (see LICENSE)
